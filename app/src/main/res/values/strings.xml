@@ -1,0 +1,4 @@
+<resources>
+	<string name="app_name">PokeFoo</string>
+    <string name="error_init_need_internet">You must be connected to the internet to first initialize the application :)</string>
+</resources>
