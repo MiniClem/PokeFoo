@@ -6,18 +6,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.sargunvohra.lib.pokekotlin.client.PokeApiClient
 
-interface PokemonSource {
-    val pokeApiClient: PokeApiClient
-    val pfDatabase: PfDatabase
-
-    suspend fun getPokemonById(id: Long): PokemonEntity
-    suspend fun getPokemonList(offset: Int, limit: Int): List<PokemonEntity>
+abstract class PokemonSource
+    (
+    protected val pokeApiClient: PokeApiClient,
+    protected val pfDatabase: PfDatabase
+) {
+    abstract suspend fun getPokemonById(id: Long): PokemonEntity
+    abstract suspend fun getPokemonList(offset: Int, limit: Int): List<PokemonEntity>
 }
 
 class PokemonSourceCache(
-    override val pokeApiClient: PokeApiClient,
-    override val pfDatabase: PfDatabase
-) : PokemonSource {
+    pokeApiClient: PokeApiClient,
+    pfDatabase: PfDatabase
+) : PokemonSource(pokeApiClient, pfDatabase) {
 
     override suspend fun getPokemonById(id: Long): PokemonEntity {
         val pkFromDb = pfDatabase.pokemonsDao().selectByIds(id)

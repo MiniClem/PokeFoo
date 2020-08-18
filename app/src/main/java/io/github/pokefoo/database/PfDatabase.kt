@@ -24,17 +24,17 @@ abstract class PfDatabase : RoomDatabase() {
                 appContext,
                 PfDatabase::class.java, "pokefoo-db"
             )
-                .addCallback(rdc)
+//                .addCallback(rdc)
                 .build()
         }
 
 
-        private val rdc = object : RoomDatabase.Callback() {
-            override fun onCreate(db: SupportSQLiteDatabase) {
-                super.onCreate(db)
-
-
-            }
-        }
+//        private val rdc = object : RoomDatabase.Callback() {
+//            override fun onCreate(db: SupportSQLiteDatabase) {
+//                super.onCreate(db)
+//
+//
+//            }
+//        }
     }
 }

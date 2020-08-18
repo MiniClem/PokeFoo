@@ -1,23 +1,21 @@
 package io.github.pokefoo
 
 import androidx.paging.PagingSource
-import io.github.pokefoo.utils.pmap
+import io.github.pokefoo.database.models.PokemonEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import me.sargunvohra.lib.pokekotlin.client.PokeApiClient
-import me.sargunvohra.lib.pokekotlin.model.Pokemon
 
 class PokemonPagingResource(
-    private val pokeApiClient: PokeApiClient
-) : PagingSource<Int, Pokemon>() {
+    private val pfCachingDataSource: PfCachingDataSource
+) : PagingSource<Int, PokemonEntity>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Pokemon> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PokemonEntity> {
         try {
             // Start refresh at page 1 if undefined.
             val nextPage = params.key ?: 0
             val limit = 12
             return withContext(Dispatchers.IO) {
-                val response = pokeApiClient.getPokemonList(nextPage, limit)
+                val response = pfCachingDataSource.pokemonSource.getPokemonList(nextPage, limit)
 
                 // Make sure that previous page can't go before 0
                 val prevKey = when {
@@ -27,16 +25,12 @@ class PokemonPagingResource(
 
                 // Make sure that previous page can't go after result count
                 val nextKey = when {
-                    nextPage + limit <= response.count -> nextPage + limit
+                    response.isNotEmpty() -> nextPage + limit
                     else -> null
                 }
 
-                val map = response.results.pmap {
-                    pokeApiClient.getPokemon(it.id)
-                }
-
                 return@withContext LoadResult.Page(
-                    data = map,
+                    data = response,
                     prevKey = prevKey,
                     nextKey = nextKey
                 )
