@@ -30,7 +30,7 @@ class PokemonPagingResource(
                 }
 
                 return@withContext LoadResult.Page(
-                    data = response,
+                    data = response.pokemonEntity,
                     prevKey = prevKey,
                     nextKey = nextKey
                 )
