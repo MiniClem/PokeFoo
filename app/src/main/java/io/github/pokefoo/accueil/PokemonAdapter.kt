@@ -7,23 +7,24 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import io.github.pokefoo.database.models.PokemonEntity
 import io.github.pokefoo.databinding.PokemonItemBinding
 import kotlinx.android.synthetic.main.pokemon_item.view.*
 import me.sargunvohra.lib.pokekotlin.model.Pokemon
 
-class PokemonAdapter : PagingDataAdapter<Pokemon, PokemonAdapter.PokemonAdapterVH>(
+class PokemonAdapter : PagingDataAdapter<PokemonEntity, PokemonAdapter.PokemonAdapterVH>(
     PokemonApiResourceComparator
 ) {
 
-    inner class PokemonAdapterVH(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class PokemonAdapterVH(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    private object PokemonApiResourceComparator : DiffUtil.ItemCallback<Pokemon>() {
-        override fun areItemsTheSame(oldItem: Pokemon, newItem: Pokemon): Boolean {
+    private object PokemonApiResourceComparator : DiffUtil.ItemCallback<PokemonEntity>() {
+        override fun areItemsTheSame(oldItem: PokemonEntity, newItem: PokemonEntity): Boolean {
             // Id is unique.
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Pokemon, newItem: Pokemon): Boolean {
+        override fun areContentsTheSame(oldItem: PokemonEntity, newItem: PokemonEntity): Boolean {
             return oldItem == newItem
         }
     }

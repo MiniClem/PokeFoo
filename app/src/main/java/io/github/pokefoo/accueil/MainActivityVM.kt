@@ -6,24 +6,26 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import io.github.pokefoo.CachingDataSourceHolder
 import io.github.pokefoo.PokemonPagingResource
 import io.github.pokefoo.database.PfDatabase
+import io.github.pokefoo.database.models.PokemonEntity
 import io.github.pokefoo.database.models.PokemonsDao
 import kotlinx.coroutines.flow.Flow
-import me.sargunvohra.lib.pokekotlin.client.PokeApiClient
-import me.sargunvohra.lib.pokekotlin.model.Pokemon
 
-class MainActivityVM : ViewModel() {
+class MainActivityVM : ViewModel()
+{
 
-    private val pokemonsDao: PokemonsDao
+	private val pokemonsDao: PokemonsDao
 
-    val pokemons: Flow<PagingData<Pokemon>> = Pager(PagingConfig(pageSize = 12)) {
-        PokemonPagingResource(PokeApiClient())
-    }.flow
-        .cachedIn(viewModelScope)
+	val pokemons: Flow<PagingData<PokemonEntity>> = Pager(PagingConfig(pageSize = 24)) {
+		PokemonPagingResource(CachingDataSourceHolder.INSTANCE)
+	}.flow
+		.cachedIn(viewModelScope)
 
-    init {
-        val db = PfDatabase.db
-        pokemonsDao = db.pokemonsDao()
-    }
+	init
+	{
+		val db = PfDatabase.db
+		pokemonsDao = db.pokemonsDao()
+	}
 }

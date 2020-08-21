@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         val pokemonAdapter = PokemonAdapter()
         layout.mainRecycler.apply {
             layoutManager =
-                GridLayoutManager(this@MainActivity, 3, GridLayoutManager.VERTICAL, false).apply {
+                GridLayoutManager(this@MainActivity, 4, GridLayoutManager.VERTICAL, false).apply {
                     layoutParams
                 }
             setHasFixedSize(true)

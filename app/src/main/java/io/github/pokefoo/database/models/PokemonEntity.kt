@@ -15,7 +15,22 @@ class PokemonEntity(
     var weight: Int,
     val sprites: PokemonSprites
 )
+{
+	override fun equals(other: Any?): Boolean
+	{
+		return other is PokemonEntity && other.hashCode() == this.hashCode()
+	}
 
+	override fun hashCode(): Int
+	{
+		var result = id
+		result = 31 * result + name.hashCode()
+		result = 31 * result + order
+		result = 31 * result + weight
+		result = 31 * result + sprites.hashCode()
+		return result
+	}
+}
 //    @ColumnInfo(name = "base_experience")
 //    val baseExperience: Int = pokemon.baseExperience
 //    val height: Int = pokemon.height

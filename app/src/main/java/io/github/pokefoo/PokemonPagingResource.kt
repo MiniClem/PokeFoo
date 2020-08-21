@@ -6,26 +6,27 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class PokemonPagingResource(
-    private val pfCachingDataSource: PfCachingDataSource
+    private val cachingDataSource: PfCachingDataSource
 ) : PagingSource<Int, PokemonEntity>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PokemonEntity> {
         try {
             // Start refresh at page 1 if undefined.
             val nextPage = params.key ?: 0
-            val limit = 12
+            val limit = 24
             return withContext(Dispatchers.IO) {
-                val response = pfCachingDataSource.pokemonSource.getPokemonList(nextPage, limit)
+                val response = cachingDataSource.pokemonSource.getPokemonList(nextPage, limit)
 
                 // Make sure that previous page can't go before 0
                 val prevKey = when {
+                    nextPage == 0 -> null
                     (nextPage - limit) > 0 -> (nextPage - limit)
-                    else -> null
+                    else -> 0
                 }
 
                 // Make sure that previous page can't go after result count
                 val nextKey = when {
-                    response.isNotEmpty() -> nextPage + limit
+                    nextPage + limit <= response.total -> nextPage + limit
                     else -> null
                 }
 
