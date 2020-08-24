@@ -37,13 +37,7 @@ class PokemonSourceCache(
 			return@withContext if (pkFromDb.isNotEmpty()) pkFromDb.first()
 			else
 				pokeApiClient.getPokemon(id.toInt()).let {
-					PokemonEntity(
-						id = it.id,
-						name = it.name,
-						order = it.order,
-						sprites = it.sprites,
-						weight = it.weight
-					).also { newPokemon ->
+					PokemonEntity.build(it).also { newPokemon ->
 						pfDatabase.pokemonsDao().insertAll(newPokemon)
 					}
 				}
@@ -54,7 +48,7 @@ class PokemonSourceCache(
 		return withContext(Dispatchers.IO) {
 			val total = pokeApiClient.getPokemonList(0, 1).count
 			val pkFromDb = pfDatabase.pokemonsDao()
-				.selectByIds(*(offset..(offset + count -1).toLong()).toVararg())
+				.selectByIds(*(offset..(offset + count - 1).toLong()).toVararg())
 
 			return@withContext if (pkFromDb.size == count)
 				PokemonEntityPage(
@@ -66,13 +60,7 @@ class PokemonSourceCache(
 					PokemonEntityPage(
 						results.pmap { namedApiResource ->
 							pokeApiClient.getPokemon(namedApiResource.id).let { pokemon ->
-								return@pmap PokemonEntity(
-									pokemon.id,
-									pokemon.name,
-									pokemon.order,
-									pokemon.weight,
-									pokemon.sprites
-								)
+								return@pmap PokemonEntity.build(pokemon)
 							}
 						},
 						offset, count, total

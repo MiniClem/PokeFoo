@@ -14,9 +14,9 @@ interface PokemonsDao
 	@Query("SELECT * FROM pokemons ORDER BY id")
 	fun selectAll(): List<PokemonEntity>
 
-	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	@Insert(onConflict = OnConflictStrategy.IGNORE)
 	fun insertAll(vararg pokemons: PokemonEntity)
 
-	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	@Insert(onConflict = OnConflictStrategy.IGNORE)
 	fun insertAll(pokemons: List<PokemonEntity>)
 }
