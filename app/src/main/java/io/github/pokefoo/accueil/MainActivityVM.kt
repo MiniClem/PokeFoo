@@ -6,11 +6,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import io.github.pokefoo.CachingDataSourceHolder
-import io.github.pokefoo.PokemonPagingResource
-import io.github.pokefoo.database.PfDatabase
-import io.github.pokefoo.database.models.PokemonEntity
-import io.github.pokefoo.database.models.PokemonsDao
+import io.github.pokefoo.data.dataSource.CachingDataSourceHolder
+import io.github.pokefoo.data.dataSource.paging.PokemonPagingResource
+import io.github.pokefoo.data.database.PfDatabase
+import io.github.pokefoo.data.database.models.PokemonEntity
+import io.github.pokefoo.data.database.models.PokemonsDao
 import kotlinx.coroutines.flow.Flow
 
 class MainActivityVM : ViewModel()

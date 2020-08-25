@@ -5,7 +5,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import io.github.pokefoo.ExampleLoadStateAdapter
+import io.github.pokefoo.data.dataSource.paging.ExampleLoadStateAdapter
 import io.github.pokefoo.databinding.ActivityMainBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package io.github.pokefoo
+package io.github.pokefoo.data.dataSource.paging
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
+import io.github.pokefoo.R
 import io.github.pokefoo.databinding.LoadStateItemBinding
 
 class LoadStateViewHolder(

@@ -1,4 +1,4 @@
-package io.github.pokefoo.database.models
+package io.github.pokefoo.data.database.models
 
 import androidx.room.Dao
 import androidx.room.Insert

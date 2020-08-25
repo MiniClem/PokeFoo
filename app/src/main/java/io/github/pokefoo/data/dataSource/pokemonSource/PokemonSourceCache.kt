@@ -1,22 +1,12 @@
-package io.github.pokefoo
+package io.github.pokefoo.data.dataSource.pokemonSource
 
-import io.github.pokefoo.database.PfDatabase
-import io.github.pokefoo.database.models.PokemonEntity
+import io.github.pokefoo.data.database.PfDatabase
+import io.github.pokefoo.data.database.models.PokemonEntity
 import io.github.pokefoo.utils.pmap
 import io.github.pokefoo.utils.toVararg
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.sargunvohra.lib.pokekotlin.client.PokeApiClient
-
-abstract class PokemonSource
-	(
-	protected val pokeApiClient: PokeApiClient,
-	protected val pfDatabase: PfDatabase
-)
-{
-	abstract suspend fun getPokemonById(id: Long): PokemonEntity
-	abstract suspend fun getPokemonList(offset: Int, count: Int): PokemonEntityPage
-}
 
 data class PokemonEntityPage(
 	val pokemonEntity: List<PokemonEntity>,
