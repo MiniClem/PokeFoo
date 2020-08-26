@@ -1,11 +1,11 @@
 package io.github.pokefoo.data.dataSource.pokemonSource
 
 import io.github.pokefoo.data.database.PfDatabase
-import io.github.pokefoo.data.database.models.PokemonEntity
+import io.github.pokefoo.data.database.models.pokemon.PokemonEntity
 import io.github.pokefoo.utils.pmap
-import io.github.pokefoo.utils.toVararg
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import me.sargunvohra.lib.pokekotlin.client.ErrorResponse
 import me.sargunvohra.lib.pokekotlin.client.PokeApiClient
 
 data class PokemonEntityPage(
@@ -21,24 +21,31 @@ class PokemonSourceCache(
 ) : PokemonSource(pokeApiClient, pfDatabase)
 {
 
-	override suspend fun getPokemonById(id: Long): PokemonEntity =
+	override suspend fun getPokemonById(id: Long): PokemonEntity? =
 		withContext(Dispatchers.IO) {
 			val pkFromDb = pfDatabase.pokemonsDao().selectByIds(id)
 			return@withContext if (pkFromDb.isNotEmpty()) pkFromDb.first()
 			else
-				pokeApiClient.getPokemon(id.toInt()).let {
-					PokemonEntity.build(it).also { newPokemon ->
-						pfDatabase.pokemonsDao().insertAll(newPokemon)
+				try
+				{
+					pokeApiClient.getPokemon(id.toInt()).let {
+						PokemonEntity.build(it).also { newPokemon ->
+							pfDatabase.pokemonsDao().insertAll(newPokemon)
+						}
 					}
+				} catch (e: ErrorResponse)
+				{
+					e.printStackTrace()
+					null
 				}
 		}
 
 	override suspend fun getPokemonList(offset: Int, count: Int): PokemonEntityPage
 	{
 		return withContext(Dispatchers.IO) {
-			val total = pokeApiClient.getPokemonList(0, 1).count
+			val total = getPokemonCount()
 			val pkFromDb = pfDatabase.pokemonsDao()
-				.selectByIds(*(offset..(offset + count - 1).toLong()).toVararg())
+				.selectByIds(listOf(offset.toLong() until offset + count).flatten())
 
 			return@withContext if (pkFromDb.size == count)
 				PokemonEntityPage(
@@ -58,6 +65,13 @@ class PokemonSourceCache(
 						pfDatabase.pokemonsDao().insertAll(it.pokemonEntity)
 					}
 				}
+		}
+	}
+
+	override suspend fun getPokemonCount(): Int
+	{
+		return withContext(Dispatchers.IO) {
+			pokeApiClient.getPokemonList(0, 1).count
 		}
 	}
 }

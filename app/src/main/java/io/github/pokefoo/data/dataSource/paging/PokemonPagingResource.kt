@@ -3,7 +3,7 @@ package io.github.pokefoo.data.dataSource.paging
 import androidx.paging.PagingSource
 import io.github.pokefoo.data.dataSource.PfCachingDataSource
 import io.github.pokefoo.data.dataSource.pokemonSource.PokemonEntityPage
-import io.github.pokefoo.data.database.models.PokemonEntity
+import io.github.pokefoo.data.database.models.pokemon.PokemonEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

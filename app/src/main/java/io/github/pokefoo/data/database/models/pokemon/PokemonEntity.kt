@@ -1,4 +1,4 @@
-package io.github.pokefoo.data.database.models
+package io.github.pokefoo.data.database.models.pokemon
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

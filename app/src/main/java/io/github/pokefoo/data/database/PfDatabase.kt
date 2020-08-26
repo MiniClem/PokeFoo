@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import io.github.pokefoo.data.database.models.PokemonEntity
-import io.github.pokefoo.data.database.models.PokemonsDao
+import io.github.pokefoo.data.database.models.pokemon.PokemonEntity
+import io.github.pokefoo.data.database.models.pokemon.PokemonsDao
 
 
 @Database(entities = [PokemonEntity::class], version = 1)

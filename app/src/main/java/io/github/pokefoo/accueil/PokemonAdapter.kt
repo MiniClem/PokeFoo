@@ -7,7 +7,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import io.github.pokefoo.data.database.models.PokemonEntity
+import io.github.pokefoo.data.database.models.pokemon.PokemonEntity
 import io.github.pokefoo.databinding.PokemonItemBinding
 import kotlinx.android.synthetic.main.pokemon_item.view.*
 
