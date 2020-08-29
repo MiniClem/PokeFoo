@@ -1,10 +1,10 @@
-package io.github.pokefoo.data.dataSource.pokemonSource
+package io.github.pokefoo.data.repository.pokemonRepository
 
 import io.github.pokefoo.data.database.PfDatabase
 import io.github.pokefoo.data.database.models.pokemon.PokemonEntity
 import me.sargunvohra.lib.pokekotlin.client.PokeApiClient
 
-abstract class PokemonSource
+abstract class PokemonRepository
 	(
 	protected val pokeApiClient: PokeApiClient,
 	protected val pfDatabase: PfDatabase

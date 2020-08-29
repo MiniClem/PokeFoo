@@ -22,4 +22,7 @@ interface PokemonsDao
 
 	@Insert(onConflict = OnConflictStrategy.IGNORE)
 	fun insertAll(pokemons: List<PokemonEntity>)
+
+	@Query("SELECT COUNT(*) FROM pokemons")
+	fun getTotalCount(): Int
 }

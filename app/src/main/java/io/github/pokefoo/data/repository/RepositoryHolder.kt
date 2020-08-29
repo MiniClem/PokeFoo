@@ -1,11 +1,11 @@
-package io.github.pokefoo.data.dataSource
+package io.github.pokefoo.data.repository
 
 import io.github.pokefoo.data.database.PfDatabase
 import me.sargunvohra.lib.pokekotlin.client.PokeApiClient
 
-object CachingDataSourceHolder
+object RepositoryHolder
 {
 	val INSTANCE by lazy {
-		return@lazy PfCachingDataSource(PokeApiClient(), PfDatabase.db)
+		return@lazy CachingRepository(PokeApiClient(), PfDatabase.db)
 	}
 }

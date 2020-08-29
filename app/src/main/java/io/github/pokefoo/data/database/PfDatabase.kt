@@ -10,7 +10,7 @@ import io.github.pokefoo.data.database.models.pokemon.PokemonEntity
 import io.github.pokefoo.data.database.models.pokemon.PokemonsDao
 
 
-@Database(entities = [PokemonEntity::class, OwnedPokemon::class], version = 2)
+@Database(entities = [PokemonEntity::class, OwnedPokemon::class], version = 2, exportSchema = false)
 abstract class PfDatabase : RoomDatabase()
 {
 
@@ -27,6 +27,7 @@ abstract class PfDatabase : RoomDatabase()
                 appContext,
                 PfDatabase::class.java, "pokefoo-db"
             )
+				.createFromAsset("pokefoo-db")
 //                .addCallback(rdc)
 				.build()
 		}

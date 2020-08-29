@@ -5,7 +5,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import io.github.pokefoo.data.dataSource.paging.ExampleLoadStateAdapter
+import io.github.pokefoo.data.repository.paging.ExampleLoadStateAdapter
 import io.github.pokefoo.databinding.ActivityMainBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity()
 {
 
 	private lateinit var layout: ActivityMainBinding
-	private val model: MainActivityVM by viewModels()
+	private val viewModel: MainActivityVM by viewModels()
 	private lateinit var pokemonAdapter: PokemonAdapter
 
 	override fun onCreate(savedInstanceState: Bundle?)
@@ -34,13 +34,15 @@ class MainActivity : AppCompatActivity()
 				footer = ExampleLoadStateAdapter()
 			)
 		}
+
+		layout.floatingActionButton.setOnClickListener { viewModel.waitForPokemon(this) }
 	}
 
 	override fun onStart()
 	{
 		super.onStart()
 		lifecycleScope.launch {
-			model.pokemons.collectLatest {
+			viewModel.pokemons.collectLatest {
 				pokemonAdapter.submitData(it)
 			}
 		}

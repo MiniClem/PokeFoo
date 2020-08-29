@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".accueil.MainActivity">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button"
+        style="@style/ShapeAppearance.App.SmallComponent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_black_24dp"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:rippleColor="@android:color/white"
+        app:shapeAppearance="@style/ShapeAppearance.App.SmallComponent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/main_recycler"
         android:layout_width="0dp"
@@ -17,5 +31,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="20"
         tools:listitem="@layout/pokemon_item" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

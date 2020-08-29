@@ -1,9 +1,10 @@
-package io.github.pokefoo.data.dataSource.pokemonSource
+package io.github.pokefoo.data.repository.pokemonRepository
 
 import io.github.pokefoo.data.database.PfDatabase
 import io.github.pokefoo.data.database.models.pokemon.PokemonEntity
 import io.github.pokefoo.utils.pmap
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import me.sargunvohra.lib.pokekotlin.client.ErrorResponse
 import me.sargunvohra.lib.pokekotlin.client.PokeApiClient
@@ -15,10 +16,10 @@ data class PokemonEntityPage(
 	val total: Int
 )
 
-class PokemonSourceCache(
+class PokemonRepositoryCache(
 	pokeApiClient: PokeApiClient,
 	pfDatabase: PfDatabase
-) : PokemonSource(pokeApiClient, pfDatabase)
+) : PokemonRepository(pokeApiClient, pfDatabase)
 {
 
 	override suspend fun getPokemonById(id: Long): PokemonEntity? =
@@ -43,35 +44,35 @@ class PokemonSourceCache(
 	override suspend fun getPokemonList(offset: Int, count: Int): PokemonEntityPage
 	{
 		return withContext(Dispatchers.IO) {
-			val total = getPokemonCount()
+			val total = async { getPokemonCount() }
 			val pkFromDb = pfDatabase.pokemonsDao()
 				.selectByIds(listOf(offset.toLong() until offset + count).flatten())
 
-			return@withContext if (pkFromDb.size == count)
-				PokemonEntityPage(
+//			return@withContext if (pkFromDb.size == count)
+				return@withContext PokemonEntityPage(
 					pkFromDb,
-					offset, count, total
+					offset, count, total.await()
 				)
-			else
-				pokeApiClient.getPokemonList(offset, count).run {
-					PokemonEntityPage(
-						results.pmap { namedApiResource ->
-							pokeApiClient.getPokemon(namedApiResource.id).let { pokemon ->
-								return@pmap PokemonEntity.build(pokemon)
-							}
-						},
-						offset, count, total
-					).also {
-						pfDatabase.pokemonsDao().insertAll(it.pokemonEntity)
-					}
-				}
+//			else
+//				pokeApiClient.getPokemonList(offset, count).run {
+//					PokemonEntityPage(
+//						results.pmap { namedApiResource ->
+//							pokeApiClient.getPokemon(namedApiResource.id).let { pokemon ->
+//								return@pmap PokemonEntity.build(pokemon)
+//							}
+//						},
+//						offset, count, total.await()
+//					).also {
+//						pfDatabase.pokemonsDao().insertAll(it.pokemonEntity)
+//					}
+//				}
 		}
 	}
 
 	override suspend fun getPokemonCount(): Int
 	{
 		return withContext(Dispatchers.IO) {
-			pokeApiClient.getPokemonList(0, 1).count
+			pfDatabase.pokemonsDao().getTotalCount()
 		}
 	}
 }

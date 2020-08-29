@@ -1,4 +1,4 @@
-package io.github.pokefoo.data.dataSource.paging
+package io.github.pokefoo.data.repository.paging
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

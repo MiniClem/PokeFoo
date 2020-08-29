@@ -1,14 +1,14 @@
-package io.github.pokefoo.data.dataSource.paging
+package io.github.pokefoo.data.repository.paging
 
 import androidx.paging.PagingSource
-import io.github.pokefoo.data.dataSource.PfCachingDataSource
-import io.github.pokefoo.data.dataSource.pokemonSource.PokemonEntityPage
+import io.github.pokefoo.data.repository.CachingRepository
+import io.github.pokefoo.data.repository.pokemonRepository.PokemonEntityPage
 import io.github.pokefoo.data.database.models.pokemon.PokemonEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class PokemonPagingResource(
-    private val cachingDataSource: PfCachingDataSource
+    private val cachingRepository: CachingRepository
 ) : PagingSource<Int, PokemonEntity>()
 {
 
@@ -18,10 +18,10 @@ class PokemonPagingResource(
 		{
 			// Start refresh at page 1 if undefined.
 			val nextPage = params.key ?: 0
-			val limit = 24
+			val limit = 25
 			return withContext(Dispatchers.IO) {
 				val response: PokemonEntityPage =
-					cachingDataSource.pokemonSource.getPokemonList(nextPage, limit)
+					cachingRepository.pokemonRepository.getPokemonList(nextPage, limit)
 
 				// Make sure that previous page can't go before 0
 				val prevKey = when

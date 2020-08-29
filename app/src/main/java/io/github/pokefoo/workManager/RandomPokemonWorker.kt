@@ -3,9 +3,8 @@ package io.github.pokefoo.workManager
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import io.github.pokefoo.data.dataSource.CachingDataSourceHolder
-import io.github.pokefoo.data.database.PfDatabase
 import io.github.pokefoo.data.database.models.ownedPokemon.OwnedPokemon
+import io.github.pokefoo.data.repository.RepositoryHolder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.random.Random
@@ -22,24 +21,26 @@ class RandomPokemonWorker(context: Context, params: WorkerParameters) :
 
 	private suspend fun generateNewPokemon(): Result
 	{
-		val dataSource = CachingDataSourceHolder.INSTANCE
-		val count = dataSource.pokemonSource.getPokemonCount()
+		val repository = RepositoryHolder.INSTANCE
+		val count = repository.pokemonRepository.getPokemonCount()
 		var i = 0
 		var isAlreadyOwned = true
 		while (i < count && isAlreadyOwned)
-			Random.nextInt(count).toLong().let { id ->
-				dataSource.pokemonSource.getPokemonById(id)?.let { pokemonEntity ->
+		{
+			val id = Random.nextInt(count)
+			repository.pokemonRepository.getPokemonById(id.toLong())?.let { pokemonEntity ->
+				repository.pokemonOwnedRepository.run {
 					isAlreadyOwned =
-						PfDatabase.db.ownedPokemonDao().getCount(pokemonEntity.id) > 0
+						getCount(pokemonEntity.id) > 0
 					if (!isAlreadyOwned)
 					{
-						PfDatabase.db.ownedPokemonDao()
-							.insertAll(listOf(OwnedPokemon(pokemonId = pokemonEntity.id)))
+						insertAll(listOf(OwnedPokemon(pokemonId = pokemonEntity.id)))
 						return Result.success()
 					} else ++i
 				}
-					?: return Result.failure()
 			}
+				?: return Result.failure()
+		}
 		return Result.failure() // Already owned all pokemons
 	}
 }
