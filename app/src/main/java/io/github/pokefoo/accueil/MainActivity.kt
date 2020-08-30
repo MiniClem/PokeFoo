@@ -30,25 +30,28 @@ class MainActivity : AppCompatActivity()
 		pokemonAdapter = PokemonAdapter(this)
 		layout.mainRecycler.apply {
 			layoutManager = GridLayoutManager(
-				this@MainActivity, 4, GridLayoutManager.VERTICAL, false
-			).apply {
-				layoutParams
-			}
+				this@MainActivity,
+				4,
+				GridLayoutManager.VERTICAL,
+				false
+			)
 			setHasFixedSize(true)
 			adapter = pokemonAdapter.withLoadStateFooter(
 				footer = ExampleLoadStateAdapter()
 			)
-			addItemDecoration(DividerItemDecoration(
-				this@MainActivity,
-				(layoutManager as GridLayoutManager).orientation
-			).apply {
-				setDrawable(
-					this@MainActivity.resources.getDrawable(
-						R.drawable.dr_basic_divider,
-						null
+			addItemDecoration(
+				DividerItemDecoration(
+					this@MainActivity,
+					(layoutManager as GridLayoutManager).orientation
+				).apply {
+					setDrawable(
+						this@MainActivity.resources.getDrawable(
+							R.drawable.dr_basic_divider,
+							null
+						)
 					)
-				)
-			})
+				}
+			)
 		}
 
 		layout.floatingActionButton.setOnClickListener { viewModel.waitForPokemon(this) }
