@@ -8,13 +8,13 @@ import androidx.room.Query
 @Dao
 interface PokemonsDao
 {
-	@Query("SELECT * FROM pokemons WHERE pokemons.id IN (:ids)")
-	fun selectByIds(vararg ids: Long): List<PokemonEntity>
+	@Query("SELECT * FROM pokemons WHERE pokemons.pokemon_id IN (:ids)")
+	fun selectByIds(vararg ids: Int): List<PokemonEntity>
 
-	@Query("SELECT * FROM pokemons WHERE pokemons.id IN (:ids)")
-	fun selectByIds(ids: List<Long>): List<PokemonEntity>
+	@Query("SELECT * FROM pokemons WHERE pokemons.pokemon_id IN (:ids)")
+	fun selectByIds(ids: List<Int>): List<PokemonEntity>
 
-	@Query("SELECT * FROM pokemons ORDER BY id")
+	@Query("SELECT * FROM pokemons ORDER BY pokemon_id")
 	fun selectAll(): List<PokemonEntity>
 
 	@Insert(onConflict = OnConflictStrategy.IGNORE)

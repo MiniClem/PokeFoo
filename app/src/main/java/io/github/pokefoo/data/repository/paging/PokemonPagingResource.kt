@@ -1,18 +1,18 @@
 package io.github.pokefoo.data.repository.paging
 
 import androidx.paging.PagingSource
+import io.github.pokefoo.data.database.models.pokemonWithOwner.PokemonWithOwnership
 import io.github.pokefoo.data.repository.CachingRepository
 import io.github.pokefoo.data.repository.pokemonRepository.PokemonEntityPage
-import io.github.pokefoo.data.database.models.pokemon.PokemonEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class PokemonPagingResource(
-    private val cachingRepository: CachingRepository
-) : PagingSource<Int, PokemonEntity>()
+	private val cachingRepository: CachingRepository
+) : PagingSource<Int, PokemonWithOwnership>()
 {
 
-	override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PokemonEntity>
+	override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PokemonWithOwnership>
 	{
 		try
 		{
@@ -20,8 +20,8 @@ class PokemonPagingResource(
 			val nextPage = params.key ?: 0
 			val limit = 25
 			return withContext(Dispatchers.IO) {
-				val response: PokemonEntityPage =
-					cachingRepository.pokemonRepository.getPokemonList(nextPage, limit)
+				val response: PokemonEntityPage<PokemonWithOwnership> =
+					cachingRepository.pokemonRepository.getOwnedPokemonList(nextPage, limit)
 
 				// Make sure that previous page can't go before 0
 				val prevKey = when
@@ -39,10 +39,10 @@ class PokemonPagingResource(
 				}
 
 				return@withContext LoadResult.Page(
-                    data = response.pokemonEntity,
-                    prevKey = prevKey,
-                    nextKey = nextKey
-                )
+					data = response.pokemonEntity,
+					prevKey = prevKey,
+					nextKey = nextKey
+				)
 			}
 		} catch (e: Exception)
 		{

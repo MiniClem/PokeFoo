@@ -11,6 +11,6 @@ interface OwnedPokemonDao
 	@Insert(onConflict = OnConflictStrategy.IGNORE)
 	fun insertAll(list: List<OwnedPokemon>)
 
-	@Query("SELECT COUNT(*) FROM owned_pokemons WHERE pokemon_id = :pokemonId")
+	@Query("SELECT COUNT(*) FROM owned_pokemons WHERE _pokemon_id = :pokemonId")
 	fun getCount(pokemonId: Int): Int
 }

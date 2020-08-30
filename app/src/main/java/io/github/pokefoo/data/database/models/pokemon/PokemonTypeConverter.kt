@@ -4,7 +4,7 @@ import androidx.room.TypeConverter
 import me.sargunvohra.lib.pokekotlin.model.PokemonSprites
 import org.json.JSONObject
 
-class PokemonTypeConverter
+public class PokemonTypeConverter
 {
 	@TypeConverter
 	fun fromPokemonSprites(pokemonSprites: PokemonSprites?): String?
@@ -22,7 +22,7 @@ class PokemonTypeConverter
 	}
 
 	@TypeConverter
-	fun fromPokemonSprites(pokemonSpritesJson: String?): PokemonSprites?
+	fun fromString(pokemonSpritesJson: String?): PokemonSprites?
 	{
 		return when
 		{

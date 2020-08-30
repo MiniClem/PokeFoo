@@ -1,5 +1,6 @@
 package io.github.pokefoo.data.database.models.pokemon
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
@@ -10,12 +11,16 @@ import me.sargunvohra.lib.pokekotlin.model.PokemonSprites
 @Entity(tableName = "pokemons")
 class PokemonEntity(
 	@PrimaryKey
+	@ColumnInfo(name = "pokemon_id", typeAffinity = ColumnInfo.INTEGER)
 	var id: Int,
+	@ColumnInfo(typeAffinity = ColumnInfo.TEXT)
 	var name: String,
+	@ColumnInfo(name = "_order", typeAffinity = ColumnInfo.INTEGER)
 	var order: Int,
+	@ColumnInfo(typeAffinity = ColumnInfo.INTEGER)
 	var weight: Int,
-	val sprites: PokemonSprites,
-	val obtained: Boolean = false
+	@ColumnInfo(typeAffinity = ColumnInfo.TEXT)
+	val sprites: PokemonSprites
 )
 {
 	companion object Factory
