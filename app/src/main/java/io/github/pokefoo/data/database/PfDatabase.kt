@@ -31,18 +31,27 @@ abstract class PfDatabase : RoomDatabase()
 	{
 		lateinit var db: PfDatabase
 
-		fun init(appContext: Context)
+		fun init(appContext: Context, taskProgressListener: TaskProgressListener)
 		{
 			db = Room.databaseBuilder(
 				appContext,
 				PfDatabase::class.java, "pokefoo-db"
 			)
-				.addCallback(rdc)
+				.addCallback(Callback(taskProgressListener))
 				.build()
 		}
 
-		private val rdc = object : RoomDatabase.Callback()
+		class Callback(
+			private val taskProgressListener: TaskProgressListener
+		) : RoomDatabase.Callback()
 		{
+			override fun onOpen(db: SupportSQLiteDatabase)
+			{
+				super.onOpen(db)
+				Log.d(TAG(), "Database opened...")
+				taskProgressListener.onFinished()
+			}
+
 			override fun onCreate(db: SupportSQLiteDatabase)
 			{
 				super.onCreate(db)
@@ -50,21 +59,25 @@ abstract class PfDatabase : RoomDatabase()
 
 				val pokeApiClient = PokeApiClient()
 				val count = pokeApiClient.getPokemonList(0, 1).count
+				taskProgressListener.setMaxProgress(count)
 				val listPokemons = mutableListOf<Pokemon>()
-				for (i in 0 until count step 10)
+				for (i in 0 until count step 50)
 				{
-					pokeApiClient.getPokemonList(i, 10).results.let {
+					pokeApiClient.getPokemonList(i, 50).results.let {
 						for (namedApiResource in it)
 						{
 							listPokemons.add(pokeApiClient.getPokemon(namedApiResource.id))
 						}
 					}
+					taskProgressListener.setProgress(i)
 					Log.d(TAG(), "Downloaded $i...")
 				}
 
 				db.beginTransaction()
 				val pokemonTypeConverter = PokemonTypeConverter()
-				for (p in listPokemons)
+				taskProgressListener.setMaxProgress(listPokemons.size)
+
+				for ((index, p) in listPokemons.withIndex())
 				{
 					val content = ContentValues().apply {
 						put("pokemon_id", p.id)
@@ -74,6 +87,7 @@ abstract class PfDatabase : RoomDatabase()
 						put("sprites", pokemonTypeConverter.fromPokemonSprites(p.sprites) ?: "")
 					}
 					db.insert("pokemons", SQLiteDatabase.CONFLICT_REPLACE, content)
+					taskProgressListener.setProgress(index)
 				}
 				db.setTransactionSuccessful()
 				db.endTransaction()

@@ -10,7 +10,6 @@ class PfApplication : Application()
 	override fun onCreate()
 	{
 		super.onCreate()
-		PfDatabase.init(applicationContext)
 		Stetho.initializeWithDefaults(this);
 	}
 }
