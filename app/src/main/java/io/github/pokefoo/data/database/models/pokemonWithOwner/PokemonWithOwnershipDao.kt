@@ -18,8 +18,17 @@ interface PokemonWithOwnershipDao
 		"""
 				SELECT * 
 				FROM pokemons p LEFT JOIN owned_pokemons op ON p.pokemon_id = op._pokemon_id
-				WHERE p.pokemon_id IN (:ids)
+				WHERE p.pokemon_id IN (:ids) 
 				"""
 	)
 	fun selectByIds(ids: List<Int>): List<PokemonWithOwnership>
+
+	@Query(
+		"""
+				SELECT * 
+				FROM pokemons p LEFT JOIN owned_pokemons op ON p.pokemon_id = op._pokemon_id
+				WHERE p.pokemon_id BETWEEN :start AND :end
+				"""
+	)
+	fun selectByRange(start: Int, end: Int): List<PokemonWithOwnership>
 }

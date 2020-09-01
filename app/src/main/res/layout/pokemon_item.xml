@@ -1,36 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="110dp"
     android:layout_height="110dp"
     android:layout_gravity="center_horizontal"
-    android:minWidth="110dp"
-    android:minHeight="110dp">
+    android:elevation="4dp">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/pokemon_item_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxWidth="100dp"
-        android:maxHeight="100dp"
-        android:minWidth="40dp"
-        android:minHeight="30dp"
-        app:layout_constraintBottom_toTopOf="@id/pokemon_item_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/circleImageView" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:minWidth="110dp"
+        android:minHeight="110dp">
 
-    <TextView
-        android:id="@+id/pokemon_item_name"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:gravity="center"
-        android:textColor="@android:color/black"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <ImageView
+            android:id="@+id/pokemon_item_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:maxWidth="100dp"
+            android:maxHeight="100dp"
+            android:minWidth="40dp"
+            android:minHeight="40dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/pokemon_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

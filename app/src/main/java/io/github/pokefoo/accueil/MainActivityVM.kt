@@ -10,9 +10,6 @@ import androidx.paging.cachedIn
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import io.github.pokefoo.data.database.PfDatabase
-import io.github.pokefoo.data.database.models.pokemon.PokemonEntity
-import io.github.pokefoo.data.database.models.pokemon.PokemonsDao
 import io.github.pokefoo.data.database.models.pokemonWithOwner.PokemonWithOwnership
 import io.github.pokefoo.data.repository.RepositoryHolder
 import io.github.pokefoo.data.repository.paging.PokemonPagingResource
@@ -22,19 +19,10 @@ import java.util.concurrent.TimeUnit
 
 class MainActivityVM : ViewModel()
 {
-
-	private val pokemonsDao: PokemonsDao
-
 	val pokemons: Flow<PagingData<PokemonWithOwnership>> = Pager(PagingConfig(pageSize = 25)) {
 		PokemonPagingResource(RepositoryHolder.INSTANCE)
 	}.flow
 		.cachedIn(viewModelScope)
-
-	init
-	{
-		val db = PfDatabase.db
-		pokemonsDao = db.pokemonsDao()
-	}
 
 	fun waitForPokemon(context: Context)
 	{

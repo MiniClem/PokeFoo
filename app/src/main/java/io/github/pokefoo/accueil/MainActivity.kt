@@ -42,7 +42,20 @@ class MainActivity : AppCompatActivity()
 			addItemDecoration(
 				DividerItemDecoration(
 					this@MainActivity,
-					(layoutManager as GridLayoutManager).orientation
+					DividerItemDecoration.VERTICAL
+				).apply {
+					setDrawable(
+						this@MainActivity.resources.getDrawable(
+							R.drawable.dr_basic_divider,
+							null
+						)
+					)
+				}
+			)
+			addItemDecoration(
+				DividerItemDecoration(
+					this@MainActivity,
+					DividerItemDecoration.HORIZONTAL
 				).apply {
 					setDrawable(
 						this@MainActivity.resources.getDrawable(

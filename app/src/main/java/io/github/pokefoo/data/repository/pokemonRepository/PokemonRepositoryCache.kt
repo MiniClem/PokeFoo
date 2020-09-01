@@ -32,11 +32,10 @@ class PokemonRepositoryCache(
 		count: Int
 	): PokemonEntityPage<PokemonWithOwnership> = withContext(Dispatchers.IO) {
 		val total = async { getPokemonCount() }
-		val ids = listOf(offset until offset + count).flatten()
-		Log.d(TAG(), "Ids requested for owned pokemons list : $ids")
-		val pkFromDb = pfDatabase.pokemonWithOwnershipDao().selectByIds(
-			ids
-		)
+		val end = offset + count
+//		val ids = listOf(offset until offset + count).flatten()
+		Log.d(TAG(), "Ids requested for owned pokemons list : from $offset to $end")
+		val pkFromDb = pfDatabase.pokemonWithOwnershipDao().selectByRange(offset, end)
 
 		return@withContext PokemonEntityPage(
 			pkFromDb,
