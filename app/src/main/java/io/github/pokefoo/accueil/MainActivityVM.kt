@@ -7,6 +7,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -28,7 +29,11 @@ class MainActivityVM : ViewModel()
 	{
 		val work = OneTimeWorkRequestBuilder<RandomPokemonWorker>().apply {
 			setInitialDelay(5L, TimeUnit.MINUTES)
-		}.build()
+		}
+			.setConstraints(Constraints.Builder()
+				.setRequiresBatteryNotLow(true)
+				.build())
+			.build()
 		WorkManager.getInstance(context)
 			.beginUniqueWork("Random Pokemon", ExistingWorkPolicy.KEEP, work)
 			.enqueue()

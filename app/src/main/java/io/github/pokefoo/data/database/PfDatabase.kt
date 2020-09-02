@@ -41,6 +41,15 @@ abstract class PfDatabase : RoomDatabase()
 				.build()
 		}
 
+		fun reInit(appContext: Context)
+		{
+			db = Room.databaseBuilder(
+				appContext,
+				PfDatabase::class.java, "pokefoo-db"
+			)
+				.build()
+		}
+
 		class Callback(
 			private val taskProgressListener: TaskProgressListener
 		) : RoomDatabase.Callback()

@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import io.github.pokefoo.data.database.PfDatabase
 import io.github.pokefoo.data.database.models.ownedPokemon.OwnedPokemon
 import io.github.pokefoo.data.repository.RepositoryHolder
 import io.github.pokefoo.utils.TAG
@@ -21,12 +22,12 @@ class RandomPokemonWorker(context: Context, params: WorkerParameters) :
 		}
 	}
 
-	private val repository = RepositoryHolder.INSTANCE
-
 	private suspend fun generateNewPokemon(): Result
 	{
-		val count = repository.pokemonRepository.getPokemonCount()
+		PfDatabase.reInit(applicationContext)
+		val repository = RepositoryHolder.INSTANCE
 
+		val count = repository.pokemonRepository.getPokemonCount()
 		var i = 0
 		var isAlreadyOwned = true
 		while (i < count && isAlreadyOwned)
