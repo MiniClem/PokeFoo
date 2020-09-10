@@ -24,7 +24,7 @@ class RandomPokemonWorker(context: Context, params: WorkerParameters) :
 
 	private suspend fun generateNewPokemon(): Result
 	{
-		PfDatabase.reInit(applicationContext)
+		PfDatabase.init(applicationContext)
 		val repository = RepositoryHolder.INSTANCE
 		val pokemonNotOwned = repository.pokemonDataAccess.getPokemonListNotOwned()
 		if (pokemonNotOwned.isEmpty())

@@ -9,6 +9,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
+/**
+ * Intermediate layer to access pokemon data
+ */
 class PokemonRepository(
 	private val pfDatabase: PfDatabase
 ) : PokemonDataAccess

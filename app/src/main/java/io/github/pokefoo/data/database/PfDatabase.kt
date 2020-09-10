@@ -29,25 +29,23 @@ abstract class PfDatabase : RoomDatabase()
 	{
 		lateinit var db: PfDatabase
 
-		fun init(appContext: Context, taskProgressListener: TaskProgressListener)
+		fun init(appContext: Context, taskProgressListener: TaskProgressListener? = null)
 		{
 			db = Room.databaseBuilder(
 				appContext,
 				PfDatabase::class.java, "pokefoo-db"
-			)
-				.addCallback(Callback(taskProgressListener))
-				.build()
+			).run {
+				taskProgressListener?.let {
+					addCallback(Callback(taskProgressListener))
+				}
+				build()
+			}
 		}
 
-		fun reInit(appContext: Context)
-		{
-			db = Room.databaseBuilder(
-				appContext,
-				PfDatabase::class.java, "pokefoo-db"
-			)
-				.build()
-		}
-
+		/**
+		 * Callback to create the initial pokemon datas in development !!
+		 * Production-ready app is given an already packed db in /assets folder
+		 */
 		class Callback(
 			private val taskProgressListener: TaskProgressListener
 		) : RoomDatabase.Callback()
