@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 class InitActivity : AppCompatActivity()
 {
 	private lateinit var layout: View
-
 	private lateinit var taskProgressListener: TaskProgressListener
 
 	override fun onCreate(savedInstanceState: Bundle?)

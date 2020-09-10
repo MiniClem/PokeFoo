@@ -30,9 +30,11 @@ class MainActivityVM : ViewModel()
 		val work = OneTimeWorkRequestBuilder<RandomPokemonWorker>().apply {
 			setInitialDelay(5L, TimeUnit.MINUTES)
 		}
-			.setConstraints(Constraints.Builder()
-				.setRequiresBatteryNotLow(true)
-				.build())
+			.setConstraints(
+				Constraints.Builder()
+					.setRequiresBatteryNotLow(true)
+					.build()
+			)
 			.build()
 		WorkManager.getInstance(context)
 			.beginUniqueWork("Random Pokemon", ExistingWorkPolicy.KEEP, work)

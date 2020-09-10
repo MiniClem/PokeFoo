@@ -18,11 +18,9 @@ import io.github.pokefoo.utils.TAG
 import me.sargunvohra.lib.pokekotlin.client.PokeApiClient
 import me.sargunvohra.lib.pokekotlin.model.Pokemon
 
-
 @Database(entities = [PokemonEntity::class, OwnedPokemon::class], version = 1, exportSchema = false)
 abstract class PfDatabase : RoomDatabase()
 {
-
 	abstract fun pokemonsDao(): PokemonsDao
 	abstract fun ownedPokemonDao(): OwnedPokemonDao
 	abstract fun pokemonWithOwnershipDao(): PokemonWithOwnershipDao
@@ -65,7 +63,6 @@ abstract class PfDatabase : RoomDatabase()
 			{
 				super.onCreate(db)
 				Log.d(TAG(), "Starting ROOM callback...")
-
 				val pokeApiClient = PokeApiClient()
 				val count = pokeApiClient.getPokemonList(0, 1).count
 				taskProgressListener.setMaxProgress(count)

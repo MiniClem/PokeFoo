@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity()
 {
-
 	private lateinit var layout: ActivityMainBinding
 	private val viewModel: MainActivityVM by viewModels()
 	private lateinit var pokemonAdapter: PokemonAdapter

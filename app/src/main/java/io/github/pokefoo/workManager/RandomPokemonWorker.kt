@@ -26,13 +26,12 @@ class RandomPokemonWorker(context: Context, params: WorkerParameters) :
 	{
 		PfDatabase.reInit(applicationContext)
 		val repository = RepositoryHolder.INSTANCE
-		val pokemonNotOwned = repository.pokemonRepository.getPokemonListNotOwned()
+		val pokemonNotOwned = repository.pokemonDataAccess.getPokemonListNotOwned()
 		if (pokemonNotOwned.isEmpty())
 		{
 			Log.d(TAG(), "No pokemon not owned..")
 			return Result.failure() // Already owned all pokemons
 		}
-
 		val r = Random.Default
 		val index = r.nextInt(pokemonNotOwned.size)
 		Log.d(TAG(), "Choosing pokemon at index : $index")
@@ -40,6 +39,5 @@ class RandomPokemonWorker(context: Context, params: WorkerParameters) :
 		repository.pokemonOwnedRepository.insertAll(listOf(OwnedPokemon(pokemonId = pokemonNotOwned[index].id)))
 
 		return Result.success()
-
 	}
 }

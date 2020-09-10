@@ -21,15 +21,12 @@ class PokemonAdapter(context: Context) :
 		PokemonApiResourceComparator
 	)
 {
-
 	private val glide = Glide.with(context)
-
 	private val pxSizeEmpty: Int = TypedValue.applyDimension(
 		TypedValue.COMPLEX_UNIT_DIP,
 		40F,
 		context.resources.displayMetrics
 	).roundToInt()
-
 	private val pxSizePokemonIcon: Int = TypedValue.applyDimension(
 		TypedValue.COMPLEX_UNIT_DIP,
 		100F,

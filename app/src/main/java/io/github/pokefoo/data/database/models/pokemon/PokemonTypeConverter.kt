@@ -30,27 +30,27 @@ public class PokemonTypeConverter
 			{
 				JSONObject(pokemonSpritesJson).let { json ->
 					PokemonSprites(
-                        json.getString("BACK_DEFAULT"),
-                        json.getString("BACK_SHINY"),
-                        json.getString("FRONT_DEFAULT"),
-                        json.getString("FRONT_SHINY"),
-                        json.getString("BACK_FEMALE"),
-                        json.getString("BACK_SHINY_FEMALE"),
-                        json.getString("FRONT_FEMALE"),
-                        json.getString("FRONT_SHINY_FEMALE")
-                    )
+						json.getString("BACK_DEFAULT"),
+						json.getString("BACK_SHINY"),
+						json.getString("FRONT_DEFAULT"),
+						json.getString("FRONT_SHINY"),
+						json.getString("BACK_FEMALE"),
+						json.getString("BACK_SHINY_FEMALE"),
+						json.getString("FRONT_FEMALE"),
+						json.getString("FRONT_SHINY_FEMALE")
+					)
 				}
 			}
 			else -> PokemonSprites(
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-            )
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null
+			)
 		}
 	}
 }
