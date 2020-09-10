@@ -12,7 +12,12 @@ abstract class PokemonRepository
 )
 {
 	abstract suspend fun getPokemonById(id: Int): PokemonEntity?
-	abstract suspend fun getOwnedPokemonList(offset: Int, count: Int): PokemonEntityPage<PokemonWithOwnership>
+	abstract suspend fun getOwnedPokemonList(
+		offset: Int,
+		count: Int
+	): PokemonEntityPage<PokemonWithOwnership>
+
 	abstract suspend fun getPokemonList(offset: Int, count: Int): PokemonEntityPage<PokemonEntity>
 	abstract suspend fun getPokemonCount(): Int
+	abstract suspend fun getPokemonListNotOwned(): List<PokemonEntity>
 }

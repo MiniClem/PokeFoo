@@ -26,31 +26,20 @@ class RandomPokemonWorker(context: Context, params: WorkerParameters) :
 	{
 		PfDatabase.reInit(applicationContext)
 		val repository = RepositoryHolder.INSTANCE
-
-		val count = repository.pokemonRepository.getPokemonCount()
-		var i = 0
-		var isAlreadyOwned = true
-		while (i < count && isAlreadyOwned)
+		val pokemonNotOwned = repository.pokemonRepository.getPokemonListNotOwned()
+		if (pokemonNotOwned.isEmpty())
 		{
-			val id = Random.nextInt(count)
-			Log.d(TAG(), "Trying to generate new pokemon with id : $id")
-			val pokemonById = repository.pokemonRepository.getPokemonById(id)
-			if (pokemonById != null)
-			{
-				repository.pokemonOwnedRepository.run {
-					isAlreadyOwned = getCount(pokemonById.id) > 0
-					if (!isAlreadyOwned)
-					{
-						insertAll(listOf(OwnedPokemon(pokemonId = pokemonById.id)))
-						return Result.success()
-					} else ++i
-				}
-			} else
-			{
-				Log.e(TAG(), "Error generating new pokemon with id : $id")
-				return Result.failure()
-			}
+			Log.d(TAG(), "No pokemon not owned..")
+			return Result.failure() // Already owned all pokemons
 		}
-		return Result.failure() // Already owned all pokemons
+
+		val r = Random.Default
+		val index = r.nextInt(pokemonNotOwned.size)
+		Log.d(TAG(), "Choosing pokemon at index : $index")
+		Log.d(TAG(), "New pokemon found with id : ${pokemonNotOwned[index].id}")
+		repository.pokemonOwnedRepository.insertAll(listOf(OwnedPokemon(pokemonId = pokemonNotOwned[index].id)))
+
+		return Result.success()
+
 	}
 }

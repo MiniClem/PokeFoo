@@ -25,4 +25,7 @@ interface PokemonsDao
 
 	@Query("SELECT COUNT(*) FROM pokemons")
 	fun getTotalCount(): Int
+
+	@Query("SELECT * FROM pokemons WHERE pokemon_id NOT IN (SELECT _pokemon_id FROM owned_pokemons)")
+	fun selectAllNotOwned(): List<PokemonEntity>
 }

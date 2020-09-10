@@ -62,4 +62,11 @@ class PokemonRepositoryCache(
 	override suspend fun getPokemonCount(): Int = withContext(Dispatchers.IO) {
 		pfDatabase.pokemonsDao().getTotalCount()
 	}
+
+	override suspend fun getPokemonListNotOwned(): List<PokemonEntity> =
+		withContext(Dispatchers.IO) {
+			return@withContext pfDatabase.pokemonsDao().selectAllNotOwned()
+		}
+
+
 }

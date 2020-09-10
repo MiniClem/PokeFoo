@@ -13,4 +13,7 @@ interface OwnedPokemonDao
 
 	@Query("SELECT COUNT(*) FROM owned_pokemons WHERE _pokemon_id = :pokemonId")
 	fun getCount(pokemonId: Int): Int
+
+	@Query("SELECT * FROM owned_pokemons ORDER BY _pokemon_id")
+	fun selectAll(): List<OwnedPokemon>
 }
