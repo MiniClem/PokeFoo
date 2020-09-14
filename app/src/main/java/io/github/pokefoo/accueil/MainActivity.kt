@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity()
 			)
 		}
 
-		layout.floatingActionButton.setOnClickListener { viewModel.waitForPokemon(this) }
+		layout.floatingActionButton.setOnClickListener { viewModel.launchWorkForNewPokemon(this) }
 	}
 
 	override fun onStart()

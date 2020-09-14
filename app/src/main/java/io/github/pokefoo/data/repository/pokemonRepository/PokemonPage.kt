@@ -1,6 +1,6 @@
 package io.github.pokefoo.data.repository.pokemonRepository
 
-data class PokemonEntityPage<T>(
+data class PokemonPage<T>(
 	val pokemonEntity: List<T>,
 	val offset: Int,
 	val count: Int,

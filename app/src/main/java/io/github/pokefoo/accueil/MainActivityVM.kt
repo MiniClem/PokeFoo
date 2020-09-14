@@ -25,7 +25,7 @@ class MainActivityVM : ViewModel()
 	}.flow
 		.cachedIn(viewModelScope)
 
-	fun waitForPokemon(context: Context)
+	fun launchWorkForNewPokemon(context: Context)
 	{
 		val work = OneTimeWorkRequestBuilder<RandomPokemonWorker>().apply {
 			setInitialDelay(5L, TimeUnit.MINUTES)
